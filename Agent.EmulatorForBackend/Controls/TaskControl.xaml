@@ -1,0 +1,108 @@
+﻿<UserControl x:Class="Agent.EmulatorForBackend.Controls.TaskControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:localVm="clr-namespace:Agent.EmulatorForBackend.ViewModels"
+             xmlns:localCtr="clr-namespace:Agent.EmulatorForBackend.Controls"
+             xmlns:localDesign="clr-namespace:Agent.EmulatorForBackend.DesignTime"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="800">
+    <d:DesignProperties.DataContext>
+        <localDesign:DesignAgentTaskViewModel/>
+    </d:DesignProperties.DataContext>
+    <UserControl.Resources>
+        <Image x:Key="imageComplete" Source="pack://application:,,,/Resources/Complete.png" Width="24"></Image>
+        <Image x:Key="imageFail" Source="pack://application:,,,/Resources/Fail.png" Width="24"></Image>
+        <Style x:Key="baseButton" TargetType="Button">
+            <Setter Property="Margin" Value="2"/>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="3" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style x:Key="completeButton" TargetType="Button" BasedOn="{StaticResource baseButton}">
+            <Setter Property="ToolTip" Value="Complete task with OK status."/>
+            <Setter Property="Content" Value="{StaticResource imageComplete}"/>
+        </Style>
+        <Style x:Key="failButton" TargetType="Button" BasedOn="{StaticResource baseButton}">
+            <Setter Property="ToolTip" Value="Complete task with Fail status."/>
+            <Setter Property="Content" Value="{StaticResource imageFail}"/>
+        </Style>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Expander Grid.RowSpan="2">
+            <Expander.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding TaskInfo.DurationMode}" VerticalAlignment="Center"/>
+                    <Label Content="Task:"  VerticalAlignment="Center"/>
+                    <TextBox Text="{Binding TaskInfo.Id}" IsReadOnly="True" VerticalAlignment="Center"/>
+                    <Label Content=":"  VerticalAlignment="Center"/>
+                    <TextBox Text="{Binding TaskInfo.Name}" IsReadOnly="True" VerticalAlignment="Center"/>
+                    <Label Content="{Binding TaskInfo.HolderInfo.Type}" VerticalAlignment="Center"/>
+                    <Label Content="ID:" VerticalAlignment="Center"/>
+                    <TextBox Text="{Binding TaskInfo.HolderInfo.Id}" IsReadOnly="True" VerticalAlignment="Center"/>
+                    <Label Content="Distribution:" VerticalAlignment="Center"/>
+                    <TextBox Text="{Binding TaskInfo.DistributionMode}" VerticalAlignment="Center"/>
+                    <Label Content="Task Event ID" VerticalAlignment="Center"/>
+                    <TextBox Text="{Binding TaskEventId}" MinWidth="120" IsReadOnly="True" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Expander.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <GridSplitter Grid.Column="1" ShowsPreview="False" Width="3"
+                    HorizontalAlignment="Center" VerticalAlignment="Stretch" Grid.RowSpan="10" />
+                <Label Grid.Row="0" Content="Labels"/>
+                <ItemsControl Grid.Row="0" Grid.Column="2" ItemsSource="{Binding TaskInfo.Labels}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Mode=OneWay}" IsReadOnly="True"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Label Grid.Row="1" Content="Script"/>
+                <ScrollViewer Grid.Row="1" Grid.Column="2" MaxHeight="300">
+                    <TextBox  
+                         Text="{Binding TaskInfo.Script}" 
+                         IsReadOnly="True" 
+                         TextWrapping="Wrap" 
+                         AcceptsReturn="True"/>
+                </ScrollViewer>
+            </Grid>
+        </Expander>
+        <Button 
+            Grid.Column="1" 
+            Command="{Binding CompleteOkCommand}"
+            Style="{StaticResource completeButton}"/>
+        <Button 
+            Grid.Column="2" 
+            Command="{Binding CompleteErrorCommand}" 
+            Style="{StaticResource failButton}"/>
+
+    </Grid>
+</UserControl>

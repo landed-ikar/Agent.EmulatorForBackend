@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="Agent.EmulatorForBackend.Controls.EditAgentInfoControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:localDesign="clr-namespace:Agent.EmulatorForBackend.DesignTime"
+             xmlns:local="clr-namespace:Agent.EmulatorForBackend"
+             xmlns:localCtr="clr-namespace:Agent.EmulatorForBackend.Controls"
+
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="600">
+    <d:DesignProperties.DataContext>
+        <localDesign:DesignAgentViewModel/>
+    </d:DesignProperties.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <GridSplitter Grid.Column="1" ShowsPreview="False" Width="3"
+        HorizontalAlignment="Center" VerticalAlignment="Stretch" Grid.RowSpan="10" />
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Agent Name"/>
+        <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Name}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Description"/>
+        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Description}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="ApiKey"/>
+        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding ApiKey}"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="BaseUri"/>
+        <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding BaseUri}"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="SlotsCount"/>
+        <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding SlotsCount}"/>
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="Labels"/>
+        <localCtr:TagListControl Grid.Row="5" Grid.Column="2" ItemsSource="{Binding Labels}"/>
+    </Grid>
+</UserControl>

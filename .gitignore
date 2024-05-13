@@ -1,0 +1,34 @@
+/.project
+/.vs/
+**/bin/
+**/obj/
+**/artifacts/
+**/project.lock.json
+**/appsettings.Development.json
+**/.vscode/
+**/wwwroot/lib/
+**/*.xproj.user
+**/*.csproj.user
+**/aspnet_consul_config.json
+/.cr
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+*.DotSettings
+
+# log file
+**/temp/*.bookmark
+**/temp/*.json
+src/Monq.Core.Service.Agents.Api/appsettings.json
+src/Monq.Core.Service.Agents.Buffer/appsettings-buffer.development.json
+src/Monq.Core.Service.Agents.Buffer/appsettings-buffer.json
+src/Monq.Core.Service.Agents.Scheduler/appsettings-scheduler.development.json
+src/Monq.Core.Service.Agents.Scheduler/appsettings-scheduler.json
+src/Monq.Core.Service.Agents.Scheduler/appsettings.json
+src/Monq.Core.Service.Agents.Buffer/appsettings.json

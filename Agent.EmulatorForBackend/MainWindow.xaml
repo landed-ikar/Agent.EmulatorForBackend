@@ -1,0 +1,51 @@
+﻿<Window x:Name="window" x:Class="Agent.EmulatorForBackend.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:localDesign="clr-namespace:Agent.EmulatorForBackend.DesignTime"
+        xmlns:localCtr="clr-namespace:Agent.EmulatorForBackend.Controls"
+        mc:Ignorable="d"
+        Title="Monq-Agent Emulator" Height="450" Width="800"
+        Icon="pack://application:,,,/Resources/AgentLogo.png">
+    <d:DesignProperties.DataContext>
+        <localDesign:DesignMainWindowViewModel/>
+    </d:DesignProperties.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBar Grid.Row="0" VerticalAlignment="Top">
+            <Button x:Name="btnAddAgent" Command="{Binding AddAgentCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/Resources/Add.png" Width="24" Margin="0,0,2,0"/>
+                    <TextBlock Text="Add New Agent" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Separator />
+            <Button Grid.Row="1" Grid.Column="1" x:Name="btnSaveAgents" Command="{Binding SaveAgentsCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/Resources/Save.png"  Width="24" Margin="0,0,2,0"/>
+                    <TextBlock Text="Save Agents Configuration" VerticalAlignment="Center"/>
+                </StackPanel>
+
+            </Button>
+        </ToolBar>
+        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
+            <ItemsControl  x:Name="icAgents" ItemsSource="{Binding Agents}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <localCtr:AgentControl DeleteCommand="{Binding DataContext.DeleteAgentCommand, ElementName = window}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </ScrollViewer>
+    </Grid>
+</Window>

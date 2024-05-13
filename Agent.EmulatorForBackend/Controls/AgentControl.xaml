@@ -1,0 +1,231 @@
+﻿<UserControl x:Name="userControl" x:Class="Agent.EmulatorForBackend.Controls.AgentControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:localCtr="clr-namespace:Agent.EmulatorForBackend.Controls"
+             xmlns:localCnv="clr-namespace:Agent.EmulatorForBackend.Converters"
+             xmlns:localDesign="clr-namespace:Agent.EmulatorForBackend.DesignTime"
+             mc:Ignorable="d" 
+             d:DesignWidth="800">
+    <d:DesignProperties.DataContext>
+        <localDesign:DesignAgentViewModel/>
+    </d:DesignProperties.DataContext>
+    <UserControl.Resources>
+        <Image x:Key="imageConnect" Source="pack://application:,,,/Resources/Connect.png" Width="24"></Image>
+        <Image x:Key="imageConnectGray" Source="pack://application:,,,/Resources/ConnectGray.png" Width="24"></Image>
+        <Image x:Key="imageDisconnect" Source="pack://application:,,,/Resources/Disconnect.png" Width="24"></Image>
+        <Image x:Key="imageDisconnectGray" Source="pack://application:,,,/Resources/DisconnectGray.png" Width="24"></Image>
+        <Image x:Key="imageEdit" Source="pack://application:,,,/Resources/Edit.png" Width="24"></Image>
+        <Image x:Key="imageEditGray" Source="pack://application:,,,/Resources/EditGray.png" Width="24"></Image>
+        <Image x:Key="imageDelete" Source="pack://application:,,,/Resources/Delete.png" Width="24"></Image>
+        <Image x:Key="imageDeleteGray" Source="pack://application:,,,/Resources/DeleteGray.png" Width="24"></Image>
+        <SolidColorBrush x:Key="disconnectedColor" Color="LightGray"/>
+        <SolidColorBrush x:Key="connectedColor" Color="ForestGreen"/>
+        <Style x:Key="baseButton" TargetType="Button">
+            <Setter Property="Margin" Value="2"/>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="3" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style x:Key="connectionIndicator" TargetType="Ellipse">
+            <Setter Property="Margin" Value="3"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=ConnectionState}" Value="Connecting">
+                    <Setter Property="Fill" Value="{StaticResource connectedColor}" />
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetProperty="Fill.Color" 
+                                                From="LightGray" To="ForestGreen" 
+                                                AutoReverse="True" Duration="0:0:0.5"
+                                                RepeatBehavior="Forever"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetProperty="Fill.Color" 
+                                                 To="ForestGreen" 
+                                                Duration="0:0:0.5"/>
+                            </Storyboard>
+
+                        </BeginStoryboard>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Connected">
+                    <Setter Property="Fill" Value="{StaticResource connectedColor}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Disconnected">
+                    <Setter Property="Fill" Value="{StaticResource disconnectedColor}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="connectButton" TargetType="Button" BasedOn="{StaticResource baseButton}">
+            <Setter Property="Visibility" Value="Visible"/>
+            <Setter Property="ToolTip" Value="Connect"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Disconnected">
+                    <Setter Property="Content" Value="{StaticResource imageConnect}"/>
+                    <Setter Property="IsEnabled" Value="True"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Connected">
+                    <Setter Property="Content" Value="{StaticResource imageConnectGray}"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Connecting">
+                    <Setter Property="Content" Value="{StaticResource imageConnectGray}"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="disconnectButton" TargetType="Button" BasedOn="{StaticResource baseButton}">
+            <Setter Property="Visibility" Value="Visible"/>
+            <Setter Property="ToolTip" Value="Disconnect"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Disconnected">
+                    <Setter Property="Content" Value="{StaticResource imageDisconnectGray}"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Connected">
+                    <Setter Property="Content" Value="{StaticResource imageDisconnect}"/>
+                    <Setter Property="IsEnabled" Value="True"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Connecting">
+                    <Setter Property="Content" Value="{StaticResource imageDisconnect}"/>
+                    <Setter Property="IsEnabled" Value="True"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="editButton" TargetType="Button" BasedOn="{StaticResource baseButton}">
+            <Setter Property="ToolTip" Value="Edit agent configuration"/>
+            <Setter Property="Visibility" Value="Hidden"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMouseOver, ElementName = mainBorder}" Value="True">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Disconnected">
+                    <Setter Property="Content" Value="{StaticResource imageEdit}"/>
+                    <Setter Property="IsEnabled" Value="True"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Connected">
+                    <Setter Property="Content" Value="{StaticResource imageEditGray}"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Connecting">
+                    <Setter Property="Content" Value="{StaticResource imageEditGray}"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="deleteButton" TargetType="Button" BasedOn="{StaticResource baseButton}">
+            <Setter Property="ToolTip" Value="Delete agent"/>
+            <Setter Property="Visibility" Value="Hidden"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMouseOver, ElementName = mainBorder}" Value="True">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Disconnected">
+                    <Setter Property="Content" Value="{StaticResource imageDelete}"/>
+                    <Setter Property="IsEnabled" Value="True"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Connected">
+                    <Setter Property="Content" Value="{StaticResource imageDeleteGray}"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ConnectionState, UpdateSourceTrigger=PropertyChanged }" Value="Connecting">
+                    <Setter Property="Content" Value="{StaticResource imageDeleteGray}"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Control.Margin" Value="2"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Control.Margin" Value="2"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <localCnv:ObservableCollectionToStringConverter x:Key="myLabelsConverter" />
+        <localCnv:ObservableCollectionToVisibilityConverter x:Key="myTasksVisibilityConverter" />
+    </UserControl.Resources>
+    <Border x:Name="mainBorder" BorderThickness="2" CornerRadius="5" Margin="5" Background="Transparent">
+        <Border.BorderBrush>
+            <SolidColorBrush Color="Gray"/>
+        </Border.BorderBrush>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Ellipse
+                    Grid.Column="0"
+                    Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}" 
+                    Style="{StaticResource connectionIndicator}" ToolTip="{Binding ConnectionState}"/>
+            <Button
+                    Grid.Column="1"
+                    Command="{Binding ConnectCommand}"
+                    Style="{StaticResource connectButton}">
+            </Button>
+            <Button 
+                    Grid.Column="2"
+                    Command="{Binding DisconnectCommand}"
+                    Style="{StaticResource disconnectButton}">
+            </Button>
+            <localCtr:BriefAgentInfoControl Grid.Column="3"/>
+            <Button
+                Name="btnEditAgent"
+                Grid.Column="4"
+                Style="{StaticResource editButton}"
+                Click="btnEditAgent_Click"/>
+            <Button 
+                Name="btnDeleteAgent"
+                Grid.Column="5"
+                Style="{StaticResource deleteButton}"
+                Click="btnDeleteAgent_Click"/>
+            <GroupBox 
+                Grid.Row="1"
+                Grid.Column="1"
+                Grid.ColumnSpan="5"
+                Margin="2"
+                Header="Полученные задания" Padding="5">
+                <ItemsControl ItemsSource="{Binding AgentTasks}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <localCtr:TaskControl>
+                            </localCtr:TaskControl>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <GroupBox.Style>
+                    <Style TargetType="GroupBox">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=AgentTasks.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </GroupBox.Style>
+            </GroupBox>
+        </Grid>
+    </Border>
+</UserControl>

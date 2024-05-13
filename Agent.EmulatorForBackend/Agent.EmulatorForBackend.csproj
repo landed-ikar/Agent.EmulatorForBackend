@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\AgentLogo.ico</ApplicationIcon>
+    <!--<PublishSingleFile>true</PublishSingleFile>-->
+  <!--<SelfContained>true</SelfContained>-->
+  <!--<RuntimeIdentifier>win-x64</RuntimeIdentifier>-->
+  <!--<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>-->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Add.png" />
+    <None Remove="Resources\AgentLogo.png" />
+    <None Remove="Resources\Complete.png" />
+    <None Remove="Resources\Connect.png" />
+    <None Remove="Resources\ConnectGray.png" />
+    <None Remove="Resources\Delete.png" />
+    <None Remove="Resources\DeleteGray.png" />
+    <None Remove="Resources\Disconnect.png" />
+    <None Remove="Resources\DisconnectGray.png" />
+    <None Remove="Resources\Edit.png" />
+    <None Remove="Resources\EditGray.png" />
+    <None Remove="Resources\Fail.png" />
+    <None Remove="Resources\Save.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\AgentLogo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
+    <PackageReference Include="Monq.Core.Models.Agents" Version="1.53.0-rev-88163" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Add.png" />
+    <Resource Include="Resources\AgentLogo.png" />
+    <Resource Include="Resources\Complete.png" />
+    <Resource Include="Resources\Connect.png" />
+    <Resource Include="Resources\ConnectGray.png" />
+    <Resource Include="Resources\Delete.png" />
+    <Resource Include="Resources\DeleteGray.png" />
+    <Resource Include="Resources\Disconnect.png" />
+    <Resource Include="Resources\DisconnectGray.png" />
+    <Resource Include="Resources\Edit.png" />
+    <Resource Include="Resources\EditGray.png" />
+    <Resource Include="Resources\Fail.png" />
+    <Resource Include="Resources\Save.png" />
+  </ItemGroup>
+
+</Project>
